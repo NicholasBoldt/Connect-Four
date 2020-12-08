@@ -1,0 +1,33 @@
+* {
+    /* height & width now includes border & padding */
+    box-sizing: border-box;
+  }
+
+.board{
+    display: flex;
+}
+
+.board div {
+    display: flex;
+    flex-direction: column;
+}
+
+.board div > div{
+    height: 100px;
+    border: 1px solid black;
+    width: 100px;
+    font-size: 50px;
+    align-items: center;
+    justify-content: center;
+}
+
+#buttons {
+    display: flex;
+    justify-content: space-around;
+
+}
+
+#turnWinner {
+    text-align: center;
+    font-size: 25px;
+}
