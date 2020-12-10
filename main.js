@@ -139,6 +139,9 @@ function smartAI() {
         //     } 
         // }
         checkColumn(board[getRandomInt(7)]);
+        if(winner !== 0){
+            break;
+        }
 
     }
 }
