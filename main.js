@@ -1,24 +1,13 @@
 /*----- constants -----*/
 const players = {
-    "1": "red",
-    "-1": "yellow",
+    "1": "Red",
+    "-1": "Yellow",
     "0": "white",
 }
 
-const winningCases = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
-  
 
 /*----- app's state (variables) -----*/
-let turn, winner, columns;
+let turn, winner, columns, moves;
 
 let board = [
     [0, 0, 0, 0, 0, 0], //column 0
@@ -41,7 +30,7 @@ let column6 = document.querySelectorAll("#col6 > div");
 
 let buttons = document.querySelectorAll(".button");
 
-let turnCounter = document.getElementById("turnWinner");
+let turnWinner = document.getElementById("turnWinner");
 let restart = document.getElementById("restart");
 
 columns = [
@@ -60,7 +49,7 @@ columns = [
 /*----- event listeners -----*/
 // board.forEach(square => square.addEventListener("click", handleClick));
 restart.addEventListener("click", initalise);
-buttons.forEach(button => button.addEventListener("click", handleClick)); 
+buttons.forEach(button => button.addEventListener("click", handleClick));
 
 
 
@@ -72,8 +61,9 @@ initalise();
 function initalise() {
     turn = 1;
     winner = 0;
-    for(i= 0; i < board.length; i++) {
-        for(n = 0; n < board[i].length; n++) {
+    moves = 0;
+    for (i = 0; i < board.length; i++) {
+        for (n = 0; n < board[i].length; n++) {
             board[i][n] = 0;
         }
     }
@@ -81,56 +71,59 @@ function initalise() {
 }
 
 function handleClick(event) {
-    currentColumn = event.target.innerHTML;
-    if(currentColumn == "Column 0") {
-        checkColumn(board[0]);
+    // if (turn === 1) {
+        currentColumn = event.target;
+        if (currentColumn.classList.contains("btn0")) {
+            checkColumn(board[0]);
+            winner = checkWinner();
+            render();
+        }
+        else if (currentColumn.classList.contains("btn1")) {
+            checkColumn(board[1]);
+            winner = checkWinner();
+            render();
+        }
+        else if (currentColumn.classList.contains("btn2")) {
+            checkColumn(board[2]);
+            winner = checkWinner();
+            render();
+        }
+        else if (currentColumn.classList.contains("btn3")) {
+            checkColumn(board[3]);
+            winner = checkWinner();
+            render();
+        }
+        else if (currentColumn.classList.contains("btn4")) {
+            checkColumn(board[4]);
+            winner = checkWinner();
+            render();
+        }
+        else if (currentColumn.classList.contains("btn5")) {
+            checkColumn(board[5]);
+            winner = checkWinner();
+            render();
+        }
+        else if (currentColumn.classList.contains("btn6")) {
+            checkColumn(board[6]);
+            winner = checkWinner();
+            render();
+        }
+    // }
+}
+
+function ai4000() {
+    while(turn === -1) {
+        checkColumn(board[getRandomInt(7)]);
         winner = checkWinner();
-        turn *= -1;
         render();
     }
-    else if(currentColumn == "Column 1") {
-        checkColumn(board[1]);
-        winner = checkWinner();
-        turn *= -1;
-        render();
-    }
-    else if(currentColumn == "Column 2") {
-        checkColumn(board[2]);
-        winner = checkWinner();
-        turn *= -1;
-        render();
-    }
-    else if(currentColumn == "Column 3") {
-        checkColumn(board[3]);
-        winner = checkWinner();
-        turn *= -1;
-        render();
-    }
-    else if(currentColumn == "Column 4") {
-        checkColumn(board[4]);
-        winner = checkWinner();
-        turn *= -1;
-        render();
-    }
-    else if(currentColumn == "Column 5") {
-        checkColumn(board[5]);
-        winner = checkWinner();
-        turn *= -1;
-        render();
-    }
-    else if(currentColumn == "Column 6") {
-        checkColumn(board[6]);
-        winner = checkWinner();
-        turn *= -1;
-        render();
-    }
-    
 }
 
 function checkColumn(array) {
-    for(i = array.length-1; i >= 0; i--) {
-        if(array[i] === 0) {
-            array[i]= turn;
+    for (i = array.length - 1; i >= 0; i--) {
+        if (array[i] === 0) {
+            array[i] = turn;
+            moves += 1;
             return;
         }
     }
@@ -138,72 +131,66 @@ function checkColumn(array) {
 
 
 function checkWinner() {
-    for(i = 1; i < board.length-1; i++) {
-        for(n = 1; n < board[i].length-1; n++) {
-            if(board[i][n] === board[i-1][n-1] && board[i][n] !== 0) { //top left 
-                return turn;
-            }
-            else if(board[i][n] === board[i][n-1] && board[i][n] !== 0) { //top middle 
-                return turn;
-            }
-            else if(board[i][n] === board[i+1][n-1] && board[i][n] !== 0) { //top right 
-                return turn;
-            }
-            else if(board[i][n] === board[i-1][n] && board[i][n] !== 0) { //left 
-                return turn;
-            }
-            else if(board[i][n] === board[i+1][n] && board[i][n] !== 0) { //right 
-                return turn;
-            }
-            else if(board[i][n] === board[i-1][n+1] && board[i][n] !== 0) { //bottom left 
-                return turn;
-            }
-            else if(board[i][n] === board[i][n+1] && board[i][n] !== 0) { //bottom middle 
-                return turn;
-            }
-            else if(board[i][n] === board[i+1][n+1] && board[i][n] !== 0) { //bottom right 
+    for (col = 0; col < 7; col++) { //check vertical
+        for (row = 0; row < 3; row++) {
+            if (checkFour(board[col][row], board[col][row + 1], board[col][row + 2], board[col][row + 3])) {
                 return turn;
             }
         }
     }
-    for(i = 0; i < board.length-1; i++) {
-        if(board[i][0] === board[i+1][0] && board[i+1][0] !== 0) { // top row
-            return turn;
-        }
-        else if (board[i][5] === board[i+1][5] && board[i+1][5] !== 0) { //bottom row
-            return turn;
-        }
-    }
-    for(n = 0; n < board.length-1; n++) {
-        if(board[0][n] === board[0][n+1] && board[0][n+1] !== 0) { // left most row
-            return turn;
-        }
-        else if (board[6][n] === board[6][n+1] && board[6][n+1] !== 0) { //bottom row
-            return turn;
+    for (col = 0; col < 4; col++) { //check horizontal 
+        for (row = 0; row < 6; row++) {
+            if (checkFour(board[col][row], board[col + 1][row], board[col + 2][row], board[col + 3][row])) {
+                return turn;
+            }
         }
     }
+    for (col = 0; col < 4; col++) { //check dia-right 
+        for (row = 0; row < 3; row++) {
+            if (checkFour(board[col][row], board[col + 1][row + 1], board[col + 2][row + 2], board[col + 3][row + 3])) {
+                return turn;
+            }
+        }
+    }
+    for (col = 0; col < 4; col++) { //check dia-left 
+        for (row = 3; row < 6; row++) {
+            if (checkFour(board[col][row], board[col + 1][row - 1], board[col + 2][row - 2], board[col + 3][row - 3])) {
+                return turn;
+            }
+        }
+    }
+    turn *= -1;
     return 0;
 }
 
+function checkFour(sq1, sq2, sq3, sq4) {
+    return ((sq1 !== 0) && (sq1 == sq2) && (sq1 == sq3) && (sq1 == sq4));
+}
 
 function render() {
-    if(winner !== 0) {
-        turnCounter.innerHTML = (players[winner] + " won!");
+    if (winner !== 0) {
+        turnWinner.innerHTML = (players[winner] + " wins!");
+    } else if (winner === 0 && moves === 42) {
+        turnWinner.innerHTML = "It's a Tie!"
+    } else {
+        turnWinner.innerHTML = (players[turn] + "'s turn");
     }
-    else {
-        turnCounter.innerHTML = (players[turn] + "'s turn");
-    }
-    for(i = 0; i < board.length; i++) {
-        for(n = board[i].length-1; n >= 0; n--) {
-            if(board[i][n] === 1 && board[i][n] !== 0) {
+    for (i = 0; i < board.length; i++) {
+        for (n = board[i].length - 1; n >= 0; n--) {
+            if (board[i][n] === 1 && board[i][n] !== 0) {
                 columns[i][n].style.backgroundColor = players[1];
             }
             else if (board[i][n] === -1 && board[i][n] !== 0) {
                 columns[i][n].style.backgroundColor = players[-1];
             }
-            else { 
-                columns[i][n].style.backgroundColor = players[0]; 
+            else {
+                columns[i][n].style.backgroundColor = players[0];
             }
         }
     }
 }
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+  
