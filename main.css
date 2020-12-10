@@ -87,7 +87,7 @@ footer {
 @media screen and (max-width: 600px) {
     .board{
         display: flex;
-        width: 300px;
+        width: 350px;
         border: 2px solid #4A95FF;
         border-radius: 25px;
         background-color: #4A95FF;
@@ -107,7 +107,7 @@ footer {
     #buttons {
         display: flex;
         justify-content: space-around;
-        width: 300px;
+        width: 350px;
         margin: 0 auto;
     }
 
@@ -140,5 +140,6 @@ footer {
         text-align: center;
         margin: 0 15px 0 0;
         border-radius: 10px;
+        background-color: #efefef;
     }
   }
