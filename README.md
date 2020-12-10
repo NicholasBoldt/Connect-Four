@@ -5,7 +5,8 @@ Hottest version of Connect Four on the market!!!!
 
 ## How to Play
 
--Literally connect four
+-Literally connect four 
+
 -You win when you get four in a row in any direction
 
 ## Play
