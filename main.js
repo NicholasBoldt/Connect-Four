@@ -19,6 +19,19 @@ let board = [
     [0, 0, 0, 0, 0, 0], //column 6
 ]
 
+let scores = {
+    "1": 0,
+    "-1": 0,
+}
+
+/*----- sounds -----*/
+
+let coinDrop = new Audio('coindrop.wav');
+let winSound = new Audio('party.mp3');
+winSound.volume = 0.1;
+
+
+
 /*----- cached element references -----*/
 let column0 = document.querySelectorAll("#col0 > div");
 let column1 = document.querySelectorAll("#col1 > div");
@@ -71,58 +84,71 @@ function initalise() {
 }
 
 function handleClick(event) {
-    // if (turn === 1) {
+    if (turn === 1) {
         currentColumn = event.target;
         if (currentColumn.classList.contains("btn0")) {
             checkColumn(board[0]);
-            winner = checkWinner();
             render();
         }
         else if (currentColumn.classList.contains("btn1")) {
             checkColumn(board[1]);
-            winner = checkWinner();
             render();
         }
         else if (currentColumn.classList.contains("btn2")) {
             checkColumn(board[2]);
-            winner = checkWinner();
             render();
         }
         else if (currentColumn.classList.contains("btn3")) {
             checkColumn(board[3]);
-            winner = checkWinner();
             render();
         }
         else if (currentColumn.classList.contains("btn4")) {
             checkColumn(board[4]);
-            winner = checkWinner();
             render();
         }
         else if (currentColumn.classList.contains("btn5")) {
             checkColumn(board[5]);
-            winner = checkWinner();
             render();
         }
         else if (currentColumn.classList.contains("btn6")) {
             checkColumn(board[6]);
-            winner = checkWinner();
             render();
         }
-    // }
+    }
+    if(turn === -1) {
+        smartAI();
+        render();
+    }
 }
 
-function ai4000() {
+function smartAI() {
     while(turn === -1) {
+        // for (col = 0; col < 7; col++) { //check vertical
+        //     for (row = 0; row < 6; row++) {
+        //         if(board[col][row] === 1 && col !== 6){
+        //             col += 1; 
+        //         }
+        //         else if (board[col][row] === -1) {
+        //             checkColumn(board[col]);
+        //             return;
+        //         }
+        //         else if(row == 5 && col == 6){
+        //             checkColumn(board[getRandomInt(7)]);
+        //             return;
+        //         } 
+        //     } 
+        // }
         checkColumn(board[getRandomInt(7)]);
-        winner = checkWinner();
-        render();
+
     }
 }
 
 function checkColumn(array) {
     for (i = array.length - 1; i >= 0; i--) {
-        if (array[i] === 0) {
+        if (array[i] === 0 && winner === 0) {
             array[i] = turn;
+            winner = checkWinner();
+            turn *= -1;
             moves += 1;
             return;
         }
@@ -131,36 +157,45 @@ function checkColumn(array) {
 
 
 function checkWinner() {
-    for (col = 0; col < 7; col++) { //check vertical
-        for (row = 0; row < 3; row++) {
-            if (checkFour(board[col][row], board[col][row + 1], board[col][row + 2], board[col][row + 3])) {
-                return turn;
+    if(winner === 0) {
+        for (col = 0; col < 7; col++) { //check vertical
+            for (row = 0; row < 3; row++) {
+                if (checkFour(board[col][row], board[col][row + 1], board[col][row + 2], board[col][row + 3])) {
+                    winSound.play();
+                    scores[turn] += 1;
+                    return turn;
+                }
             }
         }
-    }
-    for (col = 0; col < 4; col++) { //check horizontal 
-        for (row = 0; row < 6; row++) {
-            if (checkFour(board[col][row], board[col + 1][row], board[col + 2][row], board[col + 3][row])) {
-                return turn;
+        for (col = 0; col < 4; col++) { //check horizontal 
+            for (row = 0; row < 6; row++) {
+                if (checkFour(board[col][row], board[col + 1][row], board[col + 2][row], board[col + 3][row])) {
+                    winSound.play();
+                    scores[turn] += 1;
+                    return turn;
+                }
             }
         }
-    }
-    for (col = 0; col < 4; col++) { //check dia-right 
-        for (row = 0; row < 3; row++) {
-            if (checkFour(board[col][row], board[col + 1][row + 1], board[col + 2][row + 2], board[col + 3][row + 3])) {
-                return turn;
+        for (col = 0; col < 4; col++) { //check dia-right 
+            for (row = 0; row < 3; row++) {
+                if (checkFour(board[col][row], board[col + 1][row + 1], board[col + 2][row + 2], board[col + 3][row + 3])) {
+                    winSound.play();
+                    scores[turn] += 1;
+                    return turn;
+                }
             }
         }
-    }
-    for (col = 0; col < 4; col++) { //check dia-left 
-        for (row = 3; row < 6; row++) {
-            if (checkFour(board[col][row], board[col + 1][row - 1], board[col + 2][row - 2], board[col + 3][row - 3])) {
-                return turn;
+        for (col = 0; col < 4; col++) { //check dia-left 
+            for (row = 3; row < 6; row++) {
+                if (checkFour(board[col][row], board[col + 1][row - 1], board[col + 2][row - 2], board[col + 3][row - 3])) {
+                    winSound.play();
+                    scores[turn] += 1;
+                    return turn;
+                }
             }
         }
-    }
-    turn *= -1;
     return 0;
+    }
 }
 
 function checkFour(sq1, sq2, sq3, sq4) {
@@ -179,9 +214,11 @@ function render() {
         for (n = board[i].length - 1; n >= 0; n--) {
             if (board[i][n] === 1 && board[i][n] !== 0) {
                 columns[i][n].style.backgroundColor = players[1];
+                coinDrop.play();
             }
             else if (board[i][n] === -1 && board[i][n] !== 0) {
                 columns[i][n].style.backgroundColor = players[-1];
+                coinDrop.play();
             }
             else {
                 columns[i][n].style.backgroundColor = players[0];
