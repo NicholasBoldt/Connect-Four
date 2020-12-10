@@ -12,3 +12,6 @@ Hottest version of Connect Four on the market!!!!
 ## Play
 
 https://nicholasboldt.github.io/Connect-Four/
+
+
+<img src="gambit.png">
