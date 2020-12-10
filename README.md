@@ -15,4 +15,4 @@ Hottest version of Connect Four on the market!!!!
 
 https://nicholasboldt.github.io/Connect-Four/
 
-<img src="gambit.jpg">
+<img src="gambit.jpg" width="80%" height="auto">
