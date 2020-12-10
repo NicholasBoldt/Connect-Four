@@ -83,3 +83,62 @@ footer {
     border-top: 20px solid #4A95FF;
     background-color: white;
 }
+
+@media screen and (max-width: 600px) {
+    .board{
+        display: flex;
+        width: 300px;
+        border: 2px solid #4A95FF;
+        border-radius: 25px;
+        background-color: #4A95FF;
+        justify-content: space-around;
+        margin: 0 auto;
+    }
+    .board div > div{
+        height: 40px;
+        border: 1px solid #4A95FF;
+        width: 40px;
+        font-size: 50px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    
+    }
+    #buttons {
+        display: flex;
+        justify-content: space-around;
+        width: 300px;
+        margin: 0 auto;
+    }
+
+    .button {
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 10px solid #4A95FF;
+        background-color: white;
+    }
+
+    #turnWinner {
+        font-size: 20px;
+        width: 100px;
+        height: 25px;
+        border: 1px solid black;
+        text-align: center;
+        margin: 0 0 0 5px;
+        padding-top: 0;
+        border-radius: 10px;
+        background-color: #efefef;
+    }
+    
+    #restart {
+        font-size: 20px;
+        width: 100px;
+        height: 25px;
+        border: 1px solid black;
+        text-align: center;
+        margin: 0 15px 0 0;
+        border-radius: 10px;
+    }
+  }
