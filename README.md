@@ -9,9 +9,10 @@ Hottest version of Connect Four on the market!!!!
 
 -You win when you get four in a row in any direction
 
-## Play
+-You lose when you don't
+
+## Let's Play!!
 
 https://nicholasboldt.github.io/Connect-Four/
-
 
 <img src="gambit.jpg">
