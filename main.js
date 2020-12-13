@@ -60,10 +60,9 @@ columns = [
 
 
 /*----- event listeners -----*/
-// board.forEach(square => square.addEventListener("click", handleClick));
 restart.addEventListener("click", initalise);
 buttons.forEach(button => button.addEventListener("click", handleClick));
-
+// column0.forEach(button => button.addEventListener("click", handleClick));
 
 
 
@@ -123,21 +122,6 @@ function handleClick(event) {
 
 function smartAI() {
     while(turn === -1) {
-        // for (col = 0; col < 7; col++) { //check vertical
-        //     for (row = 0; row < 6; row++) {
-        //         if(board[col][row] === 1 && col !== 6){
-        //             col += 1; 
-        //         }
-        //         else if (board[col][row] === -1) {
-        //             checkColumn(board[col]);
-        //             return;
-        //         }
-        //         else if(row == 5 && col == 6){
-        //             checkColumn(board[getRandomInt(7)]);
-        //             return;
-        //         } 
-        //     } 
-        // }
         checkColumn(board[getRandomInt(7)]);
         if(winner !== 0){
             break;
